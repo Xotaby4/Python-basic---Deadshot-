@@ -215,9 +215,10 @@ print(list(filter(lambda x: x % 2 == 1, lst_to_sort)))
 
 # 25. Considering the range of values: b = range(-10, 10), use the function filter to return only negative numbers.
 print(list(filter(lambda x: x < 0, range(-10, 10))))
+# [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1]
 
 # 26*. Using the filter function, find the values that are common to the two lists:
 list_1 = [1, 2, 3, 5, 7, 9]
 list_2 = [2, 3, 5, 6, 7, 8]
 print(list(filter(lambda x: x in list_2, list_1)))
-# [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1]
+# [2, 3, 5, 7]
