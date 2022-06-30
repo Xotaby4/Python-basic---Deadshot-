@@ -89,6 +89,8 @@ class Engine(Car):
 print (f"Engine volue {Engine.get_volume(Engine)}")
 #Engine volue 100
 
-# 10. Inherit Engine by Car class.
+# 10. Check what is inheritance order of the Car class.
 print(f"Engine is inherit of Car - {issubclass(Engine, Car)}")
 #Engine is inherit of Car - True
+print(Car.mro())
+#[<class '__main__.Car'>, <class '__main__.Vehicle'>, <class 'object'>]
