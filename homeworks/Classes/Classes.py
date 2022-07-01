@@ -23,10 +23,9 @@ class Bus(Vehicle):
     def far(self):
         return self.total_capacity * 110
 
-    def set_user_capacity(self, user_capacity):
-        if user_capacity > self.total_capacity:
-            print(f"Error. The entered number is greater than the maximum allowable value. "
-                  f"Enter a number less than or equal to {self.total_capacity}")
+    def set_used_capacity(self, used_capacity):
+        if used_capacity > self.total_capacity:
+            raise Exception(f"Error. The entered number is greater than the maximum allowable value. Enter a number less than or equal to {self.total_capacity}")
         else:
             self.user_capacity = user_capacity
     def __len__(self):
@@ -65,7 +64,7 @@ print(f"bohdan total capacity is {bohdan.total_capacity}, total fare {bohdan.far
 
 # 6. Add used_capacity attribute for Bus. It means how many people are on the bus.
 #    If used_capacity > total_capacity raise an error.
-iveco.set_user_capacity(20)
+iveco.set_used_capacity(20)
 #Error. The entered number is greater than the maximum allowable value. Enter a number less than or equal to 18
 
 # 7. Write a magic method to Bus that would be triggered when len() function is called.
