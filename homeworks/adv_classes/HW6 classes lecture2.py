@@ -107,21 +107,25 @@ class Concert:
         concert.visitors_count = 1000
         print(concert.visitors_count)  # 50
     """
-    def __init__(self, max_visitors_num, visitors_count):
-        # self.max_visitors_num = self.__setattr__("max_visitors_num", max_visitors_num)
-        # self.visitors_count = self.__setattr__("visitors_count", visitors_count)
-        super(Concert, self).__setattr__("max_visitors_num", max_visitors_num)
-        super(Concert, self).__setattr__("visitors_count", visitors_count)
-    def __setattr__(self, name, value):
-        if name == "visitors_count" and value > self.max_visitors_num:
-            value = self.max_visitors_num
-            super().__setattr__(name, self.max_visitors_num)
+    max_visitors_num = 50
+    __visitors_count = 0
+
+    @property
+    def visitors_count(self):
+        return self.__visitors_count
+
+    @visitors_count.setter
+    def visitors_count(self, value):
+        if value > self.max_visitors_num:
+            self.__visitors_count = self.max_visitors_num
         else:
-            super().__setattr__(name, value)
-concert = Concert(50, 60)
+            self.__visitors_count = value
+
+concert = Concert()
+concert.visitors_count = 1000
 print(f"concert.visitors_count = {concert.visitors_count}")
-# concert.visitors_count = 60
-# поки не знаю як реалізувати.
+# concert.visitors_count = 50
+
 #6.
 import dataclasses
 @dataclasses.dataclass
