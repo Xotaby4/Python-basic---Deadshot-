@@ -1,0 +1,20 @@
+Implement abstract class Figure with abc method check_cell
+
+Figure has self attrs - name, coordinate, team
+
+Implement property display_name
+property display_name return string like - "Horse (black) - (2, 4)"
+where Horse - is name, black - team, (2, 4) - coordinate
+
+implement fabric classmethod create_from_dict for Figure
+this method get dict like
+{
+    "FNAME": "Horse 1",
+    "FCOORDINATE": (2, 2),
+    "FTEAM": "black:
+}
+and return object
+
+Create classes Horse and Pawn, override method check_cell
+check_cell get new_coordinate and check can move figure from current to new coordinate
+
