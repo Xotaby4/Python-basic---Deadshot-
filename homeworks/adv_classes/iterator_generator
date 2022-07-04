@@ -1,0 +1,40 @@
+1. Implement class iterator for Fibonacci numbers https://en.wikipedia.org/wiki/Fibonacci_number
+Iterator get numbers of first Fibonacci numbers
+Example:
+
+for i in FibonacciNumbers(10):
+    print(i)
+0
+1
+1
+2
+3
+5
+8
+13
+21
+34
+55
+
+2. Implement generator for Fibonacci numbers
+
+3. Write generator expression that returns square numbers of integers from 0 to 10
+
+4.Implement coroutine for accumulation arithmetic mean
+
+Example:
+
+def accumulation_mean():
+    # TODO implement
+    pass
+
+>>> acc_mean = accumulation_mean()
+>>> acc_mean.next()
+>>> acc_mean.send(2)
+2
+>>> acc_mean.send(8)
+5
+>>> acc_mean.send(2)
+4
+>>> acc_mean.send(4)
+4
