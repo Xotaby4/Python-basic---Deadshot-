@@ -27,11 +27,15 @@ class Bus(Vehicle):
         if used_capacity > self.total_capacity:
             raise Exception(f"Error. The entered number is greater than the maximum allowable value. Enter a number less than or equal to {self.total_capacity}")
         else:
-            self.user_capacity = user_capacity
+            self.used_capacity = used_capacity
     def __len__(self):
         return self.total_capacity//2*3
+class Engine():
+    __volume = 100
+    def get_volume(self):
+        return self.__volume
 
-class Car(Vehicle):
+class Car(Vehicle, Engine):
     def __init__(self, name, max_speed, total_capacity):
         super().__init__(name, max_speed, total_capacity)
 
@@ -70,7 +74,7 @@ iveco.set_used_capacity(20)
 # 7. Write a magic method to Bus that would be triggered when len() function is called.
 #    To figure out what magic method you should implement, take a look at the full list of magic methods:
 #    https://www.tutorialsteacher.com/python/magic-methods-in-python. Play around with other dunder methods
-print (f"len of bohdan = {len(bohdan)}")
+print(f"len of bohdan = {len(bohdan)}")
 #len of bohdan = 75
 print(audi)
 #Audi max.speed 320 total capacity 4
@@ -78,18 +82,16 @@ print(bool(bmw))
 #True
 
 # 8. Create class Engine with attribute volume and method get_volume() that will return volume.
-# 9. Inherit Engine by Car class.
-class Engine(Car):
-    __volume = 100
-    def get_volume(self):
-        return self.__volume
+print(f"Engine volue {Engine.get_volume(Engine)}")
 #print (f"Engine volue {Engine.__volume}")
 #AttributeError: type object 'Engine' has no attribute '__volume'
 print (f"Engine volue {Engine.get_volume(Engine)}")
 #Engine volue 100
 
+# 9. Inherit Engine by Car class.
+print(f"Car is inherit of Engine - {issubclass(Car, Engine)}")
+#Car is inherit of Engine - True
+
 # 10. Check what is inheritance order of the Car class.
-print(f"Engine is inherit of Car - {issubclass(Engine, Car)}")
-#Engine is inherit of Car - True
 print(Car.mro())
-#[<class '__main__.Car'>, <class '__main__.Vehicle'>, <class 'object'>]
+#[<class '__main__.Car'>, <class '__main__.Vehicle'>, <class '__main__.Engine'>, <class 'object'>]
