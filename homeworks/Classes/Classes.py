@@ -17,17 +17,16 @@ class Vehicle:
 # 2. Create classes Bus and Car that inherit Vehicle.
 
 class Bus(Vehicle):
-    def __init__(self, name, max_speed, total_capacity):
+    def __init__(self, name, max_speed, total_capacity, used_capacity):
         super().__init__(name, max_speed, total_capacity)
-
-    def far(self):
-        return self.total_capacity * 110
-
-    def set_used_capacity(self, used_capacity):
         if used_capacity > self.total_capacity:
             raise Exception(f"Error. The entered number is greater than the maximum allowable value. Enter a number less than or equal to {self.total_capacity}")
         else:
             self.used_capacity = used_capacity
+
+    def far(self):
+        return self.total_capacity * 110
+        
     def __len__(self):
         return self.total_capacity//2*3
 class Engine():
@@ -44,8 +43,8 @@ class Car(Vehicle, Engine):
 audi = Car("Audi", 320, 4)
 mersedes = Car("Mersedes", 290, 5)
 bmw = Car("BMW", 350, 5)
-iveco = Bus("Iveco", 132, 18)
-bohdan = Bus("Bohdan", 97, 50)
+iveco = Bus("Iveco", 132, 18, 10)
+bohdan = Bus("Bohdan", 97, 50, 45)
 
 # 4. Check: if car_1 is instance of Car.
 #    if car_2 is instance of Vehicle.
@@ -68,8 +67,9 @@ print(f"bohdan total capacity is {bohdan.total_capacity}, total fare {bohdan.far
 
 # 6. Add used_capacity attribute for Bus. It means how many people are on the bus.
 #    If used_capacity > total_capacity raise an error.
-iveco.set_used_capacity(20)
-#Error. The entered number is greater than the maximum allowable value. Enter a number less than or equal to 18
+mercedes = Bus("Mercedes", 150, 30, 40)
+#Error. The entered number is greater than the maximum allowable value. Enter a number less than or equal to 30
+
 
 # 7. Write a magic method to Bus that would be triggered when len() function is called.
 #    To figure out what magic method you should implement, take a look at the full list of magic methods:
