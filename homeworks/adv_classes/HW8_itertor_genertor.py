@@ -41,10 +41,9 @@ def fibonacci_generator(number):
         yield f
 
 
-fg = fibonacci_generator(11)
 print("\n")
-for i in range(11):
-    print(next(fg), end=" ")
+for i in fibonacci_generator(11):
+    print(i, end=" ")
 
 
 # 1 1 2 3 5 8 13 21 34 55 89
