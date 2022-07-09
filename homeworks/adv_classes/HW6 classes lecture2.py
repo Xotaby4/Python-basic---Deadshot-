@@ -141,9 +141,9 @@ class AddressBookDataClass:
     email: str
     birthday: str
     age: int
-AddressBook = AddressBookDataClass (0, "Denys", "+102356879454", "Clayton St, San Francisco, CA 94114, USA",
+address_book = AddressBookDataClass(0, "Denys", "+102356879454", "Clayton St, San Francisco, CA 94114, USA",
                                     "SF94114@gmail.com", "3/14/15", 7)
-print(AddressBook)
+print(address_book)
 # AddressBookDataClass(key=0, name='Denys', phone_number='+102356879454',\
 # address='Clayton St, San Francisco, CA 94114, USA', email='SF94114@gmail.com', birthday='3/14/15', age=7)
 
@@ -151,9 +151,9 @@ print(AddressBook)
 from collections import namedtuple
 AddressBookNamedTuple = namedtuple("AddressBookNamedTuple", ["key", "name", "phone_number",
                                     "address", "email", "birthday", "age"])
-AddressBookNT = AddressBookNamedTuple (0, "Denys", "+102356879454", "Clayton St, San Francisco, CA 94114, USA",
+address_book_nt = AddressBookNamedTuple(0, "Denys", "+102356879454", "Clayton St, San Francisco, CA 94114, USA",
                                     "SF94114@gmail.com", "3/14/15", 7)
-print(AddressBookNT)
+print(address_book_nt)
 # AddressBookNamedTuple(key=0, name='Denys', phone_number='+102356879454', \
 # address='Clayton St, San Francisco, CA 94114, USA', email='SF94114@gmail.com', birthday='3/14/15', age=7)
 
@@ -176,9 +176,9 @@ class AddressBook:
     def __str__(self):
         return f"AddressBook(key='{self.key}', name='{self.name}', phone_number='{self.phone_number}', " \
                f"address='{self.address}', email='{self.email}', birthday= '{self.birthday}', age='{self.age}')"
-AddressBookCl = AddressBook(0, "Denys", "+102356879454", "Clayton St, San Francisco, CA 94114, USA",
+address_book_cl= AddressBook(0, "Denys", "+102356879454", "Clayton St, San Francisco, CA 94114, USA",
                             "SF94114@gmail.com", "3/14/15", 7)
-print(AddressBookCl)
+print(address_book_cl)
 # AddressBook(key='0', name='Denys', phone_number='+102356879454', address='Clayton St, San Francisco, CA 94114, USA',\
 # email='SF94114@gmail.com', birthday= '3/14/15', age='7')
 
