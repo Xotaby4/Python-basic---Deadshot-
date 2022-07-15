@@ -11,6 +11,8 @@
 # 2022-07-11 22:18:00.782551 file.txt CLOSE
 
 from datetime import datetime as dt
+from csv import writer, reader
+from json import dump, load
 
 
 class my_loger:
@@ -29,8 +31,18 @@ class my_loger:
         self.file.close()
 
 
-with my_loger("file1.txt", 'w') as file1:
+with my_loger("file.txt", 'w') as file1:
     file1.write("Hello word")
+
+with my_loger("answer.txt", 'w') as file1:
+    file1.write("42")
+
+with my_loger("cloud.txt", 'w') as file1:
+    file1.write("Rain,\n Thunderstorm,\n SNOW")
+
+with my_loger("file.txt", 'w') as file1:
+    file1.write("I like to program")
+
 
 # TASK 2
 # Написати ф-цію яка переводить файл logs.txt в logs.csv
@@ -38,24 +50,25 @@ with my_loger("file1.txt", 'w') as file1:
 # 2022-07-11 22:17:59.782551, file.txt, OPEN
 # 2022-07-11 22:18:00.782551, file.txt, CLOSE
 
-from csv import writer, reader
 
 def txt2csv():
     with open("logs.txt", "r") as logs_txt:
         with open("logs.csv", "w") as logs_csv:
             write = writer(logs_csv, delimiter=',')
             for line in logs_txt:
-                write.writerow([line[:25], line[26:36], line[36:-1]])
+                ls = line.split()
+                write.writerow([ls[0] + ' ' + ls[1], ls[2], ls[3]])
 
 
 txt2csv()
 with open("logs.csv", "r") as log:
     print(log.read())
+
+
 # 2022-07-12 01:50:56.23462, file1.txt, OPEN
 # 2022-07-12 01:50:56.23479, file1.txt, CLOSE
 # 2022-07-12 01:50:57.90161, file1.txt, OPEN
 # 2022-07-12 01:50:57.90175, file1.txt, CLOSE
-
 
 
 # TASK 3 (з зірочкою)
@@ -70,21 +83,26 @@ with open("logs.csv", "r") as log:
 # P.S. Якщо щось не зрозуміло по умові задачі, то робіть як вважаєте за доцільно,
 # користуючись здоровим глуздом звичайно ж)
 
-from json import dump, load
-
 
 def logs_json():
     with open("logs.csv", "r") as logs_csv:
-        reader = csv.reader(logs_csv, delimiter=',')
-        counrer = 0
-        res = {"file.txt": {"count": 0, "last_time_opened": ""}}
-        for i in reader:
-            if i[-1] == " OPEN":
-                res["file.txt"]["count"] += 1
-                res["file.txt"]["last_time_opened"] = i[0]
+        read = reader(logs_csv, delimiter=',')
+        # res = {"file.txt": {"count": 0, "last_time_opened": ""}}
+        res = {}
+        for i in read:
+            if i[-1] == "OPEN":
+                try:
+                    f = res[i[1]]
+                except KeyError:
+                    res[i[1]] = {"count": 1, "last_time_opened": i[0]}
+                else:
+                    res[i[1]]["count"] += 1
+                    res[i[1]]["last_time_opened"] = i[0]
     with open("logs.json", "w") as logs_json:
         dump(res, logs_json, indent=4)
 
+
+logs_json()
 with open("logs.json", "r") as lj:
     print(load(lj))
 # {'file.txt': {'count': 2, 'last_time_opened': '2022-07-12 01:44:54.92845'}}

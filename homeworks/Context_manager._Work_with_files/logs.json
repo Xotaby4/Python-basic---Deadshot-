@@ -1,6 +1,14 @@
 {
     "file.txt": {
+        "count": 4,
+        "last_time_opened": "2022-07-15 20:57:46.825733"
+    },
+    "answer.txt": {
         "count": 2,
-        "last_time_opened": "2022-07-12 01:44:54.92845"
+        "last_time_opened": "2022-07-15 20:57:46.825078"
+    },
+    "cloud.txt": {
+        "count": 2,
+        "last_time_opened": "2022-07-15 20:57:46.825427"
     }
 }

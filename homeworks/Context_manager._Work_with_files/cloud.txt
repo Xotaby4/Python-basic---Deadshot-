@@ -1,0 +1,3 @@
+Rain,
+ Thunderstorm,
+ SNOW
