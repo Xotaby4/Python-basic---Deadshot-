@@ -13,7 +13,4 @@ class FullTrashTank(Exception):
 
 class EmptyWatterTank(Exception):
     pass
-
-class ValueError(Exception):
-    pass
 # ** ----

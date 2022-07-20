@@ -1,6 +1,6 @@
 import pytest
-from unittest import TestCase
 from VacuumCleaner import VacuumCleaner
+import VacuumCleanerExeption
 
 '''
 1. повне прибирання на яке вистачає ресурсів
@@ -48,3 +48,26 @@ def test_no_water(f_test_cleaner):
 def test_info(f_test_cleaner):
     info = "test_series; power - 100%; water tank - 100%; trash tank - 0%"
     assert (f_test_cleaner.info == info), f"{f_test_cleaner.info} != {info}"
+
+
+# Bonus
+@pytest.fixture
+def exhausted():
+    exhausted_cleaner = VacuumCleaner(1200, 0, 0, "exhausted")
+    yield exhausted_cleaner
+    del exhausted_cleaner
+
+
+def test_add_trash(exhausted):
+    with pytest.raises(VacuumCleanerExeption.FullTrashTank):
+        exhausted.add_trash()
+
+
+def test_wet_cleaning(exhausted):
+    with pytest.raises(VacuumCleanerExeption.EmptyWatterTank):
+        exhausted.wet_cleaning()
+
+
+def test_battery_drain(exhausted):
+    with pytest.raises(VacuumCleanerExeption.LowBattery):
+        exhausted.battery_drain()

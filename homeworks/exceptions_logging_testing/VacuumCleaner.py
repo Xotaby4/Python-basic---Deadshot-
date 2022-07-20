@@ -14,15 +14,15 @@ class VacuumCleaner:
         if 0 <= f_garbage <= self.v_garbage:
             self.f_garbage = f_garbage
         else:
-            raise VacuumCleanerExeption.ValueError
+            raise ValueError
         if 0 <= f_water <= self.v_water:
             self.f_water = f_water
         else:
-            raise VacuumCleanerExeption.ValueError
+            raise ValueError
         if 0 <= q_battery <= 100:
             self.q_battery = q_battery
         else:
-            raise VacuumCleanerExeption.ValueError
+            raise ValueError
 
     @property
     def info(self):

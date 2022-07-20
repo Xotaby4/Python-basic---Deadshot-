@@ -1,5 +1,6 @@
 from unittest import TestCase
 from VacuumCleaner import VacuumCleaner
+import VacuumCleanerExeption
 
 '''
 1. повне прибирання на яке вистачає ресурсів
@@ -44,3 +45,42 @@ class TestVacuumCleaner(TestCase):
     def test_info(self):
         info = "test_series; power - 100%; water tank - 100%; trash tank - 0%"
         self.assertEqual(self.test_cleaner.info, info)
+
+
+class TestBonus1(TestCase):
+
+    def test_garbage(self):
+        with self.assertRaises(ValueError):
+            test = VacuumCleaner(3000, 100, 30, 'test')
+            print(test.info)
+
+    def test_water(self):
+        with self.assertRaises(ValueError):
+            test = VacuumCleaner(1000, 1000, 30, 'test')
+            print(test.info)
+
+    def test_battery(self):
+        with self.assertRaises(ValueError):
+            test = VacuumCleaner(1000, 100, 300, 'test')
+            print(test.info)
+
+
+class TestBonus2(TestCase):
+    def setUp(self) -> None:
+        self.test_cleaner = VacuumCleaner(1200, 0, 0, "test_series")
+        print(self.test_cleaner.info)
+
+    def tearDown(self) -> None:
+        self.test_cleaner = None
+
+    def test_add_trash(self):
+        with self.assertRaises(VacuumCleanerExeption.FullTrashTank):
+            self.test_cleaner.add_trash()
+
+    def test_wet_cleaning(self):
+        with self.assertRaises(VacuumCleanerExeption.EmptyWatterTank):
+            self.test_cleaner.wet_cleaning()
+
+    def test_battery_drain(self):
+        with self.assertRaises(VacuumCleanerExeption.LowBattery):
+            self.test_cleaner.battery_drain()
