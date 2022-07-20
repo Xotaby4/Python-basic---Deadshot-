@@ -1,6 +1,5 @@
 from unittest import TestCase
 from VacuumCleaner import VacuumCleaner
-import VacuumCleanerExeption
 
 '''
 1. повне прибирання на яке вистачає ресурсів
@@ -8,7 +7,8 @@ import VacuumCleanerExeption
 3. прибирання під час якого не вистачило заряду батареї (перевірити що start_cleaning повернула False і що заряд батареї 0%)
 4. прибирання під час якого заповнився сміттє бак (перевірити що start_cleaning повернула False і що сміттєбак повний)
 5. прибирання під час якого не вистачило води (перевірити що start_cleaning повернула False і що бак з водою пустий)
-6. проперті info повертає правильне значення'''
+6. проперті info повертає правильне значення
+'''
 
 
 class TestVacuumCleaner(TestCase):
