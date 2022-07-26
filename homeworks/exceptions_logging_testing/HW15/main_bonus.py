@@ -1,6 +1,6 @@
 import uuid
 import datetime as dt
-
+from collections import OrderedDict as OrDict
 
 class UserNotFound(Exception):
     pass
@@ -14,8 +14,8 @@ class User:
     def __init__(self, name):
         self.id = uuid.uuid4()
         self.name = name
-        self.incoming_messages = []
-        self.outgoing_messages = []
+        self.incoming_messages = OrDict()
+        self.outgoing_messages = OrDict()
 
     def __str__(self):
         return f"{self.name}"
@@ -29,16 +29,18 @@ class User:
         """
         is_incoming = message_obj.user_to == self
         if is_incoming:
-            self.incoming_messages.append(message_obj)
+            self.incoming_messages[message_obj.id] = message_obj
         else:
-            self.outgoing_messages.append(message_obj)
+            self.outgoing_messages[message_obj.id] = message_obj
 
     def get_last_message(self):
         """
         Повертає останнє вхідне повідомлення
         :return:
         """
-        return self.incoming_messages[-1]
+        td = self.incoming_messages.popitem()
+        self.incoming_messages[td[0]] = td[1]
+        return td[1]
 
     def get_all_messages(self, include_incoming=True, include_outgoing=True):
         """
@@ -52,22 +54,22 @@ class User:
         :param include_outgoing:
         :return:
         """
-        return {"incomings": self.incoming_messages if include_incoming else None,
-                "outgoings": self.outgoing_messages if include_outgoing else None}
+        return {"incomings": list(self.incoming_messages.values()) if include_incoming else None,
+                "outgoings": list(self.outgoing_messages.values()) if include_outgoing else None}
 
     def read_last_message(self):
         """
         повертає останнє повідомлення, саме повідомлення видаляється з incoming_messages
         :return:
         """
-        return self.incoming_messages.pop()
+        return self.incoming_messages.popitem()[1]
 
     def read_all_messages(self):
         """
         повертає список всіх вхідних повідомлень, і очищає даний список
         :return:
         """
-        tl = self.incoming_messages.copy()
+        tl = list(self.incoming_messages.values())
         self.incoming_messages.clear()
         return tl
 
@@ -80,15 +82,16 @@ class User:
         :param include_outgoing:
         :return:
         """
-        mes = []
         if include_incoming:
-            mes = list(filter(lambda m: m.id == message_id, self.incoming_messages))
-            if mes:
-                return mes[0]
+            try:
+                return self.incoming_messages[message_id]
+            except KeyError:
+                pass
         if include_outgoing:
-            mes = list(filter(lambda m: m.id == message_id, self.outgoing_messages))
-            if mes:
-                return mes[0]
+            try:
+                return self.outgoing_messages[message_id]
+            except KeyError:
+                pass
         raise MessageNotFound
 
 
@@ -139,8 +142,9 @@ class MessageHelper:
         :param message:
         :return:
         """
-        message.user_to.incoming_messages.remove(message)
-        message.user_from.outgoing_messages.remove(message)
+        m_id = message.id
+        message.user_to.incoming_messages.pop(m_id)
+        message.user_from.outgoing_messages.pop(m_id)
 
 
 class UserHelper:
@@ -181,6 +185,4 @@ class UserHelper:
         :return:
         """
         del (cls.users_db[id])
-
-
 pass
