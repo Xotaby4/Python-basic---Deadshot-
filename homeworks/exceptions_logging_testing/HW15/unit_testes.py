@@ -57,13 +57,13 @@ class TestMessage(TestCase):
         self.message.edit("new text")
         self.assertEqual(self.message.text, "new text")
 
-class TestMessegeHelper(TestCase):
+class TestMessageHelper(TestCase):
     def setUp(self) -> None:
         self.user_from_id = main.UserHelper.create_user("UserFrom")
         self.user_to_id = main.UserHelper.create_user("UserTo")
         self.user_to = main.UserHelper.get_user(self.user_to_id)
         main.MessageHelper.send_message(self.user_from_id, self.user_to_id, "Hello bro")
-        self.messege = self.user_to.get_last_message()
+        self.message = self.user_to.get_last_message()
 
     def tearDown(self) -> None:
         del (self.user_from_id, self.user_to_id)
@@ -78,8 +78,8 @@ class TestMessegeHelper(TestCase):
             main.MessageHelper.send_message(self.user_from_id, us.id, "UDP")
 
     def test_unsend_message(self):
-        m_id = self.messege.id
-        main.MessageHelper.unsend_message(self.messege)
+        m_id = self.message.id
+        main.MessageHelper.unsend_message(self.message)
         with self.assertRaises(main.MessageNotFound):
             self.user_to.get_message_by_id(m_id)
 
