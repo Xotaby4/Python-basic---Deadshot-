@@ -86,20 +86,20 @@ class TestMessegeHelper(TestCase):
 class TestUserHelper(TestCase):
     def setUp(self) -> None:
         self.uh = main.UserHelper
-        self.uder_id = self.uh.create_user("Messagesender")
+        self.user_id = self.uh.create_user("Messagesender")
 
     def tearDown(self) -> None:
         del(self.uh)
 
     def test_create_user(self):
-        self.assertIn(self.uder_id, self.uh.users_db)
+        self.assertIn(self.user_id, self.uh.users_db)
 
     def test_get_user(self):
-        self.assertEqual(self.uh.get_user(self.uder_id).name, "Messagesender")
+        self.assertEqual(self.uh.get_user(self.user_id).name, "Messagesender")
 
     def test_delete_user(self):
-        self.uh.delete_user(self.uder_id)
+        self.uh.delete_user(self.user_id)
         with self.assertRaises(main.UserNotFound):
-            self.uh.get_user(self.uder_id)
+            self.uh.get_user(self.user_id)
 
 
