@@ -31,13 +31,50 @@ def som_func(a, b):
 
 print(som_func(1, 2))
 
+
 # --**Task2**--
 
 class ValidationError(Exception):
     pass
 
-def expect(sampl_dict: dict):
-    def big_wrap
-    pass
+
+def expect(sam_dict: dict):
+    def big_wrap(func):
+        def wrap(f_dict: dict):
+            f_key = f_dict.keys()
+            for key, value in sam_dict:
+                if value.required:
+                    try:
+                        if value['type'] == type(f_key[key]):
+                            continue
+                        else:
+                            raise ValidationError
+                    except KeyError:
+                        raise ValidationError
+            return func(f_dict)
+
+        return wrap
+
+    return big_wrap
+
 
 # --**Task3**--
+def expect(sam_dict: dict):
+    def big_wrap(func):
+        def wrap(*args, **kwargs):
+            f_dict = func(*args, **kwargs)
+            f_key = f_dict.keys()
+            for key, value in sam_dict:
+                if value.required:
+                    try:
+                        if value['type'] == type(f_key[key]):
+                            continue
+                        else:
+                            raise ValidationError
+                    except KeyError:
+                        raise ValidationError
+            return f_dict
+
+        return wrap
+
+    return big_wrap
