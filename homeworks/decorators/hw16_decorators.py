@@ -1,4 +1,6 @@
 # --**Task1**--
+from random import randint
+
 
 def exception_wrapper(func):
     def wrap(*args, **kwargs):
@@ -24,13 +26,30 @@ def exception_wrapper(func):
     return wrap
 
 
-# @exception_wrapper
-def som_func(a, b):
-    return som_func(a / b, b)
+Exception_list = [ZeroDivisionError, TypeError, RecursionError, StopIteration, OverflowError,
+                  IndexError, KeyError, Exception]
 
 
-print(som_func(1, 2))
+@exception_wrapper
+def rand_exc_func():
+    raise Exception_list[randint(0, 7)]
+    return "never give up"
 
+
+for i in range(10):
+    print(rand_exc_func())
+
+
+# Index does not exist
+# Index does not exist
+# You have dived too deep into recursion. Always consider the return before diving
+# You have dived too deep into recursion. Always consider the return before diving
+# Сannot be divided by zero
+# Not a valid argument type
+# Maybe this key will fit another dict
+# Сannot be divided by zero
+# Iterator elements are exhausted
+# My imagination is exhausted, but the function still throws errors
 
 # --**Task2**--
 
@@ -56,6 +75,48 @@ def expect(sam_dict: dict):
         return wrap
 
     return big_wrap
+
+
+sam_dict = {
+    "id": {
+        "type": int,
+        "required": True,
+    },
+
+    "name": {
+        "type": str,
+        "required": True,
+    },
+    "age": {
+        "type": int,
+        "required": False,
+    },
+    "city": {
+        "type": str,
+        "required": False,
+    }
+}
+cor_dict = {
+    "id": 1,
+    "name": "Denys",
+    "age": 31,
+    "city": "Kyiv"
+}
+un_cor_dict = {
+    "name": 42,
+    "city": "Polo Alto"
+}
+
+
+@expect
+def task2(f_dict: dict):
+    d_keys = f_dict.keys()
+    res = f'{f_dict["id"]} {f_dict["name"]}'
+    if "age" in d_keys:
+        res += f'. He is {f_dict["age"]} years old'
+    if "city" in d_keys:
+        res += f'. And lives in the city of {f_dict["city"]}'
+    return res
 
 
 # --**Task3**--
