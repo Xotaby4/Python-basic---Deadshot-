@@ -19,4 +19,12 @@ def test_exception_wrapper():
 
 
 def test_expect():
-    pass
+    assert hw.task2(hw.cor_dict) == "1 Denys. He is 31 years old. And lives in the city of Kyiv"
+    with pytest.raises(hw.ValidationError):
+        hw.task2(hw.un_cor_dict)
+
+
+def test_marshal():
+    assert hw.task3(1, "Denys", 31, "Kyiv") == hw.cor_dict
+    with pytest.raises(hw.ValidationError):
+        hw.task3("1", 42)

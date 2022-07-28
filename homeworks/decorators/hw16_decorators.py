@@ -57,19 +57,23 @@ class ValidationError(Exception):
     pass
 
 
-def expect(sam_dict: dict):
+def validator(s_dict: dict, f_dict: dict) -> None:
+    for key, value in s_dict.items():
+        if value["required"]:
+            try:
+                if value["type"] == type(f_dict[key]):
+                    continue
+                else:
+                    raise ValidationError
+            except KeyError:
+                raise ValidationError
+
+
+def expect(s_dict: dict):
     def big_wrap(func):
         def wrap(f_dict: dict):
             f_key = f_dict.keys()
-            for key, value in sam_dict:
-                if value.required:
-                    try:
-                        if value['type'] == type(f_key[key]):
-                            continue
-                        else:
-                            raise ValidationError
-                    except KeyError:
-                        raise ValidationError
+            validator(s_dict, f_dict)
             return func(f_dict)
 
         return wrap
@@ -108,8 +112,8 @@ un_cor_dict = {
 }
 
 
-@expect
-def task2(f_dict: dict):
+@expect(sam_dict)
+def task2(f_dict: dict) -> str:
     d_keys = f_dict.keys()
     res = f'{f_dict["id"]} {f_dict["name"]}'
     if "age" in d_keys:
@@ -119,23 +123,35 @@ def task2(f_dict: dict):
     return res
 
 
+print(task2(cor_dict))
+
+
+# 1 Denys. He is 31 years old. And lives in the city of Kyiv
+
+
 # --**Task3**--
-def expect(sam_dict: dict):
+def marshal(s_dict: dict):
     def big_wrap(func):
         def wrap(*args, **kwargs):
             f_dict = func(*args, **kwargs)
             f_key = f_dict.keys()
-            for key, value in sam_dict:
-                if value.required:
-                    try:
-                        if value['type'] == type(f_key[key]):
-                            continue
-                        else:
-                            raise ValidationError
-                    except KeyError:
-                        raise ValidationError
+            validator(s_dict, f_dict)
             return f_dict
 
         return wrap
 
     return big_wrap
+
+
+@marshal(sam_dict)
+def task3(id_, name, age=None, city=None):
+    res = {"id": id_, "name": name}
+    if age:
+        res["age"] = age
+    if "name":
+        res["city"] = city
+    return res
+
+
+dry = task3(1, "Denys", 31, "Kyiv")
+print(dry, dry == cor_dict)
