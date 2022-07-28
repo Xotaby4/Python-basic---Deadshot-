@@ -107,7 +107,7 @@ un_cor_dict = {
     "city": "Polo Alto"
 }
 
-git
+
 @expect
 def task2(f_dict: dict):
     d_keys = f_dict.keys()
