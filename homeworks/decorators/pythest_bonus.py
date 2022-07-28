@@ -17,5 +17,6 @@ def test_exception_wrapper():
     for i in range(100):
         assert (hw.rand_exc_func in hw.Exception_list) == False, "Something unexpected happened"
 
+
 def test_expect():
     pass
