@@ -1,5 +1,4 @@
-import csv
-import json
+import csv, json
 
 
 class SomeUser:
@@ -38,11 +37,10 @@ class CustomSerializer:
         with open('users.json', 'w') as fj:
             json.dump(self.user, fj)
 
+
 if __name__ == '__main__':
     denchyk = SomeUser('Denys Dalebiha', 31, 'Ukraina Kyiv')
     petya = SomeUser('Petro Motivator', 32, 'Ukraina Hlivyshche')
     serializer = CustomSerializer()
     serializer.serialize(denchyk, 'json')
     serializer.serialize(petya, 'csv')
-
-
