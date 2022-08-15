@@ -32,13 +32,10 @@ for i in FibonacciNumbers(10):
 
 # 2. Implement generator for Fibonacci numbers
 def fibonacci_generator(number):
-    yield 1
-    yield 1
-    f_2, f_1 = 1, 1
-    for i in range(2, number):
-        f = f_1 + f_2
-        f_2, f_1 = f_1, f
-        yield f
+    f_1, f_2 = 1, 1
+    for i in range(number):
+        yield f_1
+        f_1, f_2 = f_2, f_1 + f_2
 
 
 print("\n")
@@ -51,12 +48,12 @@ for i in fibonacci_generator(11):
 
 # 3. Write generator expression that returns square numbers of integers from 0 to 10
 
-def quadro_gen():
-    for i in range(1, 11):
+def quadro_gen(n):
+    for i in range(1, n+1):
         yield i ** 2
 
 
-q = quadro_gen()
+q = quadro_gen(10)
 print("\n")
 for i in range(10):
     print(next(q), end=" ")
