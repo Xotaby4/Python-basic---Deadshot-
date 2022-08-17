@@ -1,4 +1,5 @@
 from time import time
+from bs4 import BeautifulSoup
 
 import aiohttp
 import asyncio
@@ -22,14 +23,23 @@ async def aiohttp_get(url):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             html = await response.text()
-            print(url, response.status)
             return html
-
+def get_description(page: str) -> str:
+    """return film description"""
+    soup = BeautifulSoup(page, 'html.parser')
+    try:
+        res = soup.find('span', class_='sc-16ede01-2').text
+    except AttributeError:
+        print("url")
+        res = 'No find description'
+    return res
 
 @timer
 async def task_creator(urls: list):
     tasks = [asyncio.create_task(aiohttp_get(x)) for x in urls]
-    await asyncio.gather(*tasks)
+    t = [await asyncio.wait(tasks)]
+    l = [get_description(t[0][0].pop().result()) for i in range(3)]
+    print(l)
 
 
 if __name__ == '__main__':
