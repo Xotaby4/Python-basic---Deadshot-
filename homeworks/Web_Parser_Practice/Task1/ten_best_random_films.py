@@ -1,17 +1,16 @@
-import aiohttp
 import asyncio
 import csv
 import requests
 from random import choices
 from time import time
 
-from aiohttp import ClientResponse
+from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 
 
 def timer(func):
-    # This function shows the execution time of
-    # the function object passed
+    """This function shows the execution time of
+       the function object passed"""
     def wrap_func(*args, **kwargs):
         t1 = time()
         result = func(*args, **kwargs)
@@ -24,7 +23,8 @@ def timer(func):
 
 @timer
 async def aiohttp_get(url):
-    async with aiohttp.ClientSession() as session:
+    """the function gets the page code asynchronously"""
+    async with ClientSession() as session:
         async with session.get(url) as response:
             html = await response.text()
             return html
@@ -32,6 +32,7 @@ async def aiohttp_get(url):
 
 @timer
 def get_film(html_film: BeautifulSoup) -> list:
+    """Parse the title, year and link to the movie"""
     year = html_film.find('span').text[1:-1]
     name = html_film.find('a').string
     link = 'https://www.imdb.com' + html_film.find('a').get('href')
@@ -45,7 +46,7 @@ def get_description(page: str) -> str:
     try:
         res = soup.find('span', class_='sc-16ede01-2').text
     except AttributeError:
-        print("url")
+        print(page)
         res = 'No find description'
     return res
 
@@ -59,24 +60,24 @@ def write_csv(list_films: list):
             writer.writerow(row)
 
 
-async def task_creator(urls: list):
+async def task(f_list: list):
+    urls = [x[2] for x in f_list]
     tasks = [asyncio.create_task(aiohttp_get(x)) for x in urls]
     t = [await asyncio.wait(tasks)]
-    des_list =[get_description(t[0][0].pop().result()) for i in range(3)]
-    return des_list
+    for i, film in enumerate(f_list):
+        film.pop()
+        film.append(get_description(tasks[i].result()))
+    print(f_list)
+    write_csv(film_list)
 
 
 if __name__ == '__main__':
     t1 = time()
-    film_list = [0] * 10
+    number_of_films = 10
     page = requests.get('https://www.imdb.com/chart/top/').text
     soup = BeautifulSoup(page, 'html.parser')
-    ten_film_list = choices(soup.find_all('td', class_='titleColumn'), k=10)
-    url_list = [get_film(x)[2] for x in ten_film_list]
-    asyncio.run(task_creator([url_list]))
-    for i in range(len(ten_film_list)):
-        film_list[i] = get_film(ten_film_list.pop())
-        film_list.append(get_description(film_list.pop()))
-    write_csv(film_list)
+    ten_film_list = choices(soup.find_all('td', class_='titleColumn'), k=number_of_films)
+    film_list = [get_film(ten_film_list.pop()) for i in range(number_of_films)]
+    asyncio.run(task(film_list))
     t2 = time()
     print(f'Program executed in {(t2 - t1):.4f}s')
