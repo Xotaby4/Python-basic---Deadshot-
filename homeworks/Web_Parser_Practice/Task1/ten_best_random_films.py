@@ -1,9 +1,10 @@
 import asyncio
-import csv
-import requests
+import argparse
+
+from requests import get as requests_get
+from csv import writer as csv_writer
 from random import choices
 from time import time
-
 from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 
@@ -11,6 +12,7 @@ from bs4 import BeautifulSoup
 def timer(func):
     """This function shows the execution time of
        the function object passed"""
+
     def wrap_func(*args, **kwargs):
         t1 = time()
         result = func(*args, **kwargs)
@@ -54,7 +56,7 @@ def get_description(page: str) -> str:
 @timer
 def write_csv(list_films: list):
     with open('films.csv', 'w') as f:
-        writer = csv.writer(f, delimiter=';')
+        writer = csv_writer(f, delimiter=';')
         writer.writerow(['Year', 'Name', 'Description'])
         for row in list_films:
             writer.writerow(row)
@@ -73,8 +75,11 @@ async def task(f_list: list):
 
 if __name__ == '__main__':
     t1 = time()
-    number_of_films = 10
-    page = requests.get('https://www.imdb.com/chart/top/').text
+    parser = argparse.ArgumentParser('enter number of films (from 1 to 250)')
+    parser.add_argument('-n', '--num', type=int, help="number of films")
+    args = parser.parse_args()
+    number_of_films = args.num if args.num and 0 < args.num <= 250 else 10
+    page = requests_get('https://www.imdb.com/chart/top/').text
     soup = BeautifulSoup(page, 'html.parser')
     ten_film_list = choices(soup.find_all('td', class_='titleColumn'), k=number_of_films)
     film_list = [get_film(ten_film_list.pop()) for i in range(number_of_films)]
